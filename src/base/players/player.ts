@@ -17,7 +17,7 @@ export class Player extends Entity {
     static readonly DECELERATION = 3;
     static readonly MIN_SPEED = 0.02;
     static readonly MAX_SPEED = 0.32;
-    static readonly RUNNING_THRESHOLD = 0.27;
+    static readonly RUNNING_THRESHOLD = 0.28;
     static readonly JUMP_POWER = 24;
     static readonly BOUNCE_POWER = 16;
     static readonly MOVEMENT_SPEED_UP = 5;

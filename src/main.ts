@@ -5,6 +5,7 @@ import { setup } from "./constants";
 import { Renderer } from "./base/renderer";
 import { Player } from "./base/players/player";
 import { Brick } from "./base/objects/brick";
+import { HardBlock } from "./base/objects/hard_block";
 
 let deltaTime = 0;
 
@@ -56,6 +57,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 		level.set(i, 1, new Ground());
 	}
 	level.set(17, 5, new Brick());
+	level.set(20, 2, new HardBlock());
 	for(let i = 2; i <= 12; i++) {
 		level.set(23, i, new Ground());
 	}
