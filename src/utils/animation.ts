@@ -6,11 +6,13 @@ export class Animation {
     private covered: number;
     frames: HTMLImageElement[];
     time: number;
+    speed: number;
 
     constructor(frames: HTMLImageElement[], time: number) {
         this.covered = 0;
         this.frames = frames;
         this.time = time;
+        this.speed = 1;
 
         Animation.ANIMATIONS.push(this);
     }
@@ -20,7 +22,7 @@ export class Animation {
     }
 
     update(): void {
-        this.covered += dt();
+        this.covered += this.speed * dt();
     }
 
     frame(): HTMLImageElement {

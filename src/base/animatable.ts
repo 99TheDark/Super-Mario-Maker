@@ -25,4 +25,9 @@ export class Animatable {
             return this.curAnimation.frame();
         }
     }
+
+    setSpeed(speed: number): void {
+        if(this.curAnimation instanceof Animation)
+            this.curAnimation.speed = speed;
+    }
 }

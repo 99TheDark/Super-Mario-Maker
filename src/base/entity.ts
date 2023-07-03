@@ -41,6 +41,8 @@ export class Entity extends Animatable {
         };
     }
 
+    run(): void {}
+
     update(direction: Direction): void {
         splitDir(direction,
             () => {

@@ -45,6 +45,7 @@ export class Level {
         Animation.all();
         this.update("x");
         this.update("y");
+        this.entities.forEach(entity => entity.run());
 
         this.draw(renderer);
     }
