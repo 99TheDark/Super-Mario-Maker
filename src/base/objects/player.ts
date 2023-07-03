@@ -42,15 +42,23 @@ export class Player extends Entity {
         return (this.keyboard.down("m") ? Player.RUNNING_SPEED : Player.WALKING_SPEED) * dt();
     }
 
+    private get stopped(): boolean {
+        return this.keyboard.down("s") && this.onGround;
+    }
+
     run(): void {
         if(this.keyboard.down("a")) {
             this.facing = -1;
-            this.xv -= this.getSpeed();
         } else if(this.keyboard.down("d")) {
             this.facing = 1;
-            this.xv += this.getSpeed();
-        } else {
+        }
+
+        if(this.stopped) {
             this.xv = applyFriction(this.xv, Player.DECELERATION);
+        } else if(this.keyboard.down("a")) {
+            this.xv -= this.getSpeed();
+        } else if(this.keyboard.down("d")) {
+            this.xv += this.getSpeed();
         }
 
         if(this.onGround && this.keyboard.down("w")) {
@@ -59,7 +67,9 @@ export class Player extends Entity {
 
         this.xv = absConstrain(this.xv, Player.MAX_SPEED);
 
-        if(!this.onGround) {
+        if(this.keyboard.down("s")) {
+            this.setAnimation(Player.CROUCH);
+        } else if(!this.onGround) {
             if(Math.abs(this.xv) >= Player.RUNNING_THRESHOLD) {
                 this.setAnimation(Player.RUN_JUMP);
             } else {
@@ -69,11 +79,13 @@ export class Player extends Entity {
                     this.setAnimation(Player.FALL);
                 }
             }
-        } else if(this.keyboard.down("m") && this.keyboard.down("a") && this.xv >= 0) {
-            this.facing = 1;
-            this.setAnimation(Player.SKID);
-        } else if(this.keyboard.down("m") && this.keyboard.down("d") && this.xv <= 0) {
-            this.facing = -1;
+        } else if(
+            !this.stopped && this.keyboard.down("m") &&
+            (
+                (this.keyboard.down("a") && this.xv >= 0) ||
+                (this.keyboard.down("d") && this.xv <= 0)
+            )
+        ) {
             this.setAnimation(Player.SKID);
         } else if(Math.abs(this.xv) > Player.MIN_SPEED) {
             this.setAnimation(Player.WALK_ANIMATION);
