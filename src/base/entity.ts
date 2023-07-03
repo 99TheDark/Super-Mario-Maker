@@ -41,7 +41,8 @@ export class Entity extends Animatable {
         };
     }
 
-    run(): void {}
+    control(): void {}
+    animate(): void {}
 
     update(direction: Direction): void {
         splitDir(direction,
@@ -107,7 +108,7 @@ export class Entity extends Animatable {
                 this.xv *= 0.7;
             },
             () => {
-                this.y = other.y - (this.height / 2 + other.height / 2 + EPSILON) * Math.sign(this.yv);
+                this.y = other.y + (this.yv < 0 ? 1 : -this.height);
                 this.yv *= 0.7;
             }
         );

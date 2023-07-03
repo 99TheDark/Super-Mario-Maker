@@ -3,7 +3,7 @@ import { Goomba } from "./base/objects/goomba";
 import { Ground } from "./base/objects/ground";
 import { setup } from "./constants";
 import { Renderer } from "./base/renderer";
-import { Player } from "./base/objects/player";
+import { Player } from "./base/players/player";
 import { Brick } from "./base/objects/brick";
 
 let deltaTime = 0;

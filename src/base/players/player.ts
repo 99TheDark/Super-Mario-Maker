@@ -10,6 +10,8 @@ import { absConstrain } from "../../utils/constain";
 export class Player extends Entity {
     static readonly WIDTH = 0.75;
     static readonly HEIGHT = 1;
+    static readonly CROUCH_HEIGHT = 0.5;
+
     static readonly WALKING_SPEED = 0.2;
     static readonly RUNNING_SPEED = 0.4;
     static readonly DECELERATION = 3;
@@ -46,19 +48,19 @@ export class Player extends Entity {
         return this.keyboard.down("s") && this.onGround;
     }
 
-    run(): void {
+    control(): void {
         if(this.keyboard.down("a")) {
             this.facing = -1;
         } else if(this.keyboard.down("d")) {
             this.facing = 1;
         }
 
-        if(this.stopped) {
-            this.xv = applyFriction(this.xv, Player.DECELERATION);
-        } else if(this.keyboard.down("a")) {
+        if(!this.stopped && this.keyboard.down("a")) {
             this.xv -= this.getSpeed();
-        } else if(this.keyboard.down("d")) {
+        } else if(!this.stopped && this.keyboard.down("d")) {
             this.xv += this.getSpeed();
+        } else {
+            this.xv = applyFriction(this.xv, Player.DECELERATION);
         }
 
         if(this.onGround && this.keyboard.down("w")) {
@@ -67,6 +69,10 @@ export class Player extends Entity {
 
         this.xv = absConstrain(this.xv, Player.MAX_SPEED);
 
+        this.height = this.keyboard.down("s") ? Player.CROUCH_HEIGHT : Player.HEIGHT;
+    }
+
+    animate(): void {
         if(this.keyboard.down("s")) {
             this.setAnimation(Player.CROUCH);
         } else if(!this.onGround) {

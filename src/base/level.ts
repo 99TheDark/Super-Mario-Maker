@@ -38,14 +38,18 @@ export class Level {
             }
             block?.draw(renderer, x, y);
         });
-        this.entities.forEach(entity => entity.draw(renderer));
+        this.entities.forEach(entity => {
+            entity.draw(renderer);
+            // renderer.hitbox(entity.x, entity.y, entity.width, entity.height);
+        });
     }
 
     run(renderer: Renderer): void {
-        Animation.all();
+        this.entities.forEach(entity => entity.control());
         this.update("x");
         this.update("y");
-        this.entities.forEach(entity => entity.run());
+        this.entities.forEach(entity => entity.animate());
+        Animation.all();
 
         this.draw(renderer);
     }

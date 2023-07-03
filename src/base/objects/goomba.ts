@@ -2,7 +2,7 @@ import { Direction, RectangularDirection, normalizeDirection } from "../../utils
 import { load } from "../../utils/images";
 import { Entity } from "../entity";
 import { Animation } from "../../utils/animation";
-import { Player } from "./player";
+import { Player } from "../players/player";
 import { Collider } from "../../utils/collision";
 
 export class Goomba extends Entity {

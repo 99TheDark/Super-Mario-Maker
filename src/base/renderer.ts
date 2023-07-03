@@ -26,4 +26,13 @@ export class Renderer {
         );
         this.ctx.restore();
     }
+
+    hitbox(x: number, y: number, width: number, height: number): void {
+        this.ctx.strokeRect(
+            (x - width / 2 + 1 / 2) * TILE_SIZE * this.scale,
+            this.canvas.height - (y + height) * TILE_SIZE * this.scale,
+            width * this.scale * TILE_SIZE,
+            height * this.scale * TILE_SIZE
+        );
+    }
 }
