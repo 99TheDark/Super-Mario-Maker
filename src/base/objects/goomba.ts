@@ -4,11 +4,12 @@ import { Entity } from "../entity";
 import { Animation } from "../../utils/animation";
 import { Player } from "../players/player";
 import { Collider } from "../../utils/collision";
+import { dt } from "../../main";
 
 export class Goomba extends Entity {
     static readonly WIDTH = 0.9;
     static readonly HEIGHT = 1;
-    static readonly SPEED = 0.06;
+    static readonly SPEED = 1.5;
 
     static readonly IDLE = load("goomba/idle");
     static readonly WALK_1 = load("goomba/walk1");
@@ -25,7 +26,7 @@ export class Goomba extends Entity {
         if(direction == "x") {
             if(this.onGround) {
                 this.setAnimation(Goomba.WALK_ANIMATION);
-                this.xv = this.facing * Goomba.SPEED;
+                this.xv = this.facing * Goomba.SPEED * dt();
             } else {
                 this.setAnimation(null);
             }
