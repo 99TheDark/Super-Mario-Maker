@@ -23,6 +23,7 @@ export class Player extends Entity {
     static readonly BOUNCE_POWER = 16;
     static readonly MAX_JUMP = 15;
     static readonly MOVEMENT_SPEED_UP = 5;
+    static readonly MIN_MOVEMENT_SPEED = 0.2;
 
     static readonly WALK_1 = load("mario/walk1");
     static readonly WALK_2 = load("mario/walk2");
@@ -122,7 +123,7 @@ export class Player extends Entity {
             case "crouch": this.setAnimation(Player.CROUCH); break;
         }
 
-        this.setSpeed(Math.abs(this.xv) * Player.MOVEMENT_SPEED_UP);
+        this.setSpeed(Math.max(Math.abs(this.xv) * Player.MOVEMENT_SPEED_UP, Player.MIN_MOVEMENT_SPEED));
     }
 
     resolve(direction: RectangularDirection, other: Collider): void {
