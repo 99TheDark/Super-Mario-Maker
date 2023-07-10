@@ -15,7 +15,7 @@ export class Player extends Entity {
     static readonly WALKING_SPEED = 6;
     static readonly RUNNING_SPEED = 12;
     static readonly DECELERATION = 3;
-    static readonly MIN_SPEED = 0.02;
+    static readonly MIN_SPEED = 0.005;
     static readonly MAX_SPEED = 0.32;
     static readonly RUNNING_THRESHOLD = 0.22;
     static readonly JUMP_POWER = 10;
@@ -23,7 +23,7 @@ export class Player extends Entity {
     static readonly BOUNCE_POWER = 16;
     static readonly MAX_JUMP = 15;
     static readonly MOVEMENT_SPEED_UP = 5;
-    static readonly MIN_MOVEMENT_SPEED = 0.2;
+    static readonly MIN_MOVEMENT_SPEED = 0.5;
 
     static readonly WALK_1 = load("mario/walk1");
     static readonly WALK_2 = load("mario/walk2");
@@ -89,28 +89,32 @@ export class Player extends Entity {
     animate(): void {
         if(this.keyboard.down("s")) {
             this.state = "crouch";
-        } else if(!this.onGround) {
-            if(Math.abs(this.xv) >= Player.RUNNING_THRESHOLD) {
-                this.state = "run";
-            } else {
+        } else if(this.state != "crouch" || this.yv < 0) {
+            if(this.onGround) {
+                if(
+                    !this.stopped && this.keyboard.down("m") &&
+                    (
+                        (this.keyboard.down("a") && this.xv >= 0) ||
+                        (this.keyboard.down("d") && this.xv <= 0)
+                    )
+                ) {
+                    this.state = "skid";
+                } else if(Math.abs(this.xv) >= Player.RUNNING_THRESHOLD) {
+                    this.state = "run";
+                } else if(Math.abs(this.xv) >= Player.MIN_SPEED) {
+                    this.state = "walk";
+                } else {
+                    this.state = null;
+                }
+            } else if(this.state != "run") {
                 if(this.yv > 0) {
                     this.state = "jump";
                 } else {
                     this.state = "fall";
                 }
+            } else {
+                this.state = null;
             }
-        } else if(
-            !this.stopped && this.keyboard.down("m") &&
-            (
-                (this.keyboard.down("a") && this.xv >= 0) ||
-                (this.keyboard.down("d") && this.xv <= 0)
-            )
-        ) {
-            this.state = "skid";
-        } else if(Math.abs(this.xv) > Player.MIN_SPEED) {
-            this.state = "walk";
-        } else {
-            this.state = null;
         }
 
         switch(this.state) {
