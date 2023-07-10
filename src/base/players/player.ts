@@ -36,6 +36,7 @@ export class Player extends Entity {
     static readonly WALK_ANIMATION = new Animation([Player.WALK_1, Player.WALK_2], 0.1);
 
     private jumpTimer: number;
+    private running: boolean;
     state: PlayerState | null;
     keyboard: Keyboard;
 
@@ -43,6 +44,7 @@ export class Player extends Entity {
         super(Player.WALK_1, x, y, Player.WIDTH, Player.HEIGHT);
 
         this.jumpTimer = -1;
+        this.running = false;
         this.state = null;
         this.keyboard = new Keyboard();
     }
@@ -79,7 +81,11 @@ export class Player extends Entity {
                 this.yv += power;
                 this.jumpTimer += power;
             }
+        } else {
+            this.jumpTimer = -1;
         }
+
+        if(this.onGround) this.running = Math.abs(this.xv) >= Player.RUNNING_THRESHOLD;
 
         this.xv = absConstrain(this.xv, Player.MAX_SPEED);
 
@@ -99,13 +105,13 @@ export class Player extends Entity {
                     )
                 ) {
                     this.state = "skid";
-                } else if(Math.abs(this.xv) >= Player.RUNNING_THRESHOLD) {
-                    this.state = "run";
                 } else if(Math.abs(this.xv) >= Player.MIN_SPEED) {
                     this.state = "walk";
                 } else {
                     this.state = null;
                 }
+            } else if(this.running) {
+                this.state = "run";
             } else if(this.state != "run") {
                 if(this.yv > 0) {
                     this.state = "jump";
