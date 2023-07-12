@@ -14,7 +14,7 @@ export class Player extends Entity {
 
     static readonly WALKING_SPEED = 6;
     static readonly RUNNING_SPEED = 12;
-    static readonly DECELERATION = 3;
+    static readonly DECELERATION = 3.5;
     static readonly MIN_SPEED = 0.005;
     static readonly MAX_SPEED = 0.32;
     static readonly RUNNING_THRESHOLD = 0.22;
@@ -105,7 +105,7 @@ export class Player extends Entity {
                     )
                 ) {
                     this.state = "skid";
-                } else if(Math.abs(this.xv) >= Player.MIN_SPEED) {
+                } else if(this.state != "skid" && Math.abs(this.xv) >= Player.MIN_SPEED) {
                     this.state = "walk";
                 } else {
                     this.state = null;
